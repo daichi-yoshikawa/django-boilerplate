@@ -26,38 +26,38 @@ Variable Name | Definition
 
 | Variable Name | Definition | Example |
 | ------------- | ---------- | ------- | 
-| APP_NAME | Application name. Used description in email, for example. | 'My Web App' |
-| APP_DOMAIN | URL of app | '`http://localhost:8000`' |
-| TENANT_DOMAIN_LENGTH | Length of tenant domain which is an identifier of each tenant used internally. | 32 |
-| TENANT_INVITATION_CODE_LENGTH | Length of secret code randomly generated which is used to invite user(s) to a tenant | 32 |
-| TENANT_INVITATION_CODE_LIFETIME_MINS | If minutes of this value passed, invitation code expires. | 360 |
-| TENANT_INVITATION_CODE_REQUEST_MAX_SIZE | This number of users can be invited at the same time. | 50 |
-| DJANGO_DEBUG | The same as Django build-in DJANGO_DEBUG flag. | True |
-| DJANGO_SECRET_KEY | Secret key used to identify running Django application. | some-random-letters-hard-to-guess |
-| POSTGRES_HOST | IP address of server where docker container for postgres runs. | 'localhost' |
-| POSTGRES_CONTAINER_NAME | Docker container name for postgres service. | postgres_server_dev |
-| POSTGRES_DB | Used DB name of postgres. | postgres_db_dev |
-| POSTGRES_HOST_PORT | Port used for postgres docker container. | 5432 |
-| POSTGRES_USER | User name for postgres. | user_dev |
-| POSTGRES_PASSWORD | Password of postgres. | secret_password_hard_to_guess |
-| POSTGRES_MOUNTED_VOLUME | Relative path to directory mounted to postgres docker container. | ./data/postgres_dev |
-| DJANGO_TEMPLATE_DIR | Path to directory containing index.html. Relative to parent directory of root directory of this boilerplate. | vue-root-dir/dist/ |
-| DJANGO_STATIC_DIR | Path to directory containing static files(css, js files). Relative to parent directory of root directory of this boilerplate. | vue-root-dir/dist/static/ |
-| ACCESS_TOKEN_LIFETIME_MINS | Access token expires in this minutes. | 30 |
-| REFRESH_TOKEN_LIFETIME_DAYS | Access token expires in this days. | 30 |
-| UPDATE_LAST_LOGIN | If true, last_login data in users table is recorded. | True |
-| EMAIL_VERIFICATION_CODE_LENGTH | Length of code randomly generated, which is used to verify email. | 32 |
-| EMAIL_VERIFICATION_CODE_LIFETIME_MINS | If this minutes passed, email verification code expires. | 30 |
-| EMAIL_BACKEND | Backend to send email. | django.core.mail.backends.smtp.EmailBackend |
-| EMAIL_HOST | URL of used email server. | smtp.gmail.com (If use gmail.) |
-| EMAIL_HOST_USER | Email address of sender. | `sender.my.awesome.app@xyz.xyz` |
-| EMAIL_HOST_PASSWORD | Password of used email address. | secret-password-hard-to-guess |
-| EMAIL_PORT | Port used by email server. | 587 |
-| EMAIL_USE_TLS | Flag to indicate use of TLS. | True |
-| MEDIA_ROOT | Directory name used to store media data(files). | media |
-| MEDIA_URL | Relative path starting with '/' and ending with '/' to directory to store media data. | /media/ |
-| PASSWORD_RESET_CODE_LENGTH | Length of code randomly generated, which is used to reset user password. | 32 |
-| PASSWORD_RESET_CODE_LIFETIME_MINS | Password reset code expires if this minutes passed. | 30 |
+| <sup><b>APP_NAME</b></sup> | Application name. Used description in email, for example. | 'My Web App' |
+| <sup><b>APP_DOMAIN</b></sup> | URL of app | '`http://localhost:8000`' |
+| <sup><b>TENANT_DOMAIN_LENGTH</b></sup> | Length of tenant domain which is an identifier of each tenant used internally. | 32 |
+| <sup><b>TENANT_INVITATION_CODE_LENGTH</b></sup> | Length of secret code randomly generated which is used to invite user(s) to a tenant | 32 |
+| <sup><b>TENANT_INVITATION_CODE_LIFETIME_MINS</b></sup> | If minutes of this value passed, invitation code expires. | 360 |
+| <sup><b>TENANT_INVITATION_CODE_REQUEST_MAX_SIZE</b></sup> | This number of users can be invited at the same time. | 50 |
+| <sup><b>DJANGO_DEBUG</b></sup> | The same as Django build-in DJANGO_DEBUG flag. | True |
+| <sup><b>DJANGO_SECRET_KEY</b></sup> | Secret key used to identify running Django application. | some-random-letters-hard-to-guess |
+| <sup><b>POSTGRES_HOST</b></sup> | IP address of server where docker container for postgres runs. | 'localhost' |
+| <sup><b>POSTGRES_CONTAINER_NAME</b></sup> | Docker container name for postgres service. | postgres_server_dev |
+| <sup><b>POSTGRES_DB</b></sup> | Used DB name of postgres. | postgres_db_dev |
+| <sup><b>POSTGRES_HOST_PORT</b></sup> | Port used for postgres docker container. | 5432 |
+| <sup><b>POSTGRES_USER</b></sup> | User name for postgres. | user_dev |
+| <sup><b>POSTGRES_PASSWORD</b></sup> | Password of postgres. | secret_password_hard_to_guess |
+| <sup><b>POSTGRES_MOUNTED_VOLUME</b></sup> | Relative path to directory mounted to postgres docker container. | ./data/postgres_dev |
+| <sup><b>DJANGO_TEMPLATE_DIR</b></sup> | Path to directory containing index.html. Relative to parent directory of root directory of this boilerplate. | vue-root-dir/dist/ |
+| <sup><b>DJANGO_STATIC_DIR</b></sup> | Path to directory containing static files(css, js files). Relative to parent directory of root directory of this boilerplate. | vue-root-dir/dist/static/ |
+| <sup><b>ACCESS_TOKEN_LIFETIME_MINS</b></sup> | Access token expires in this minutes. | 30 |
+| <sup><b>REFRESH_TOKEN_LIFETIME_DAYS</b></sup> | Access token expires in this days. | 30 |
+| <sup><b>UPDATE_LAST_LOGIN</b></sup> | If true, last_login data in users table is recorded. | True |
+| <sup><b>EMAIL_VERIFICATION_CODE_LENGTH</b></sup> | Length of code randomly generated, which is used to verify email. | 32 |
+| <sup><b>EMAIL_VERIFICATION_CODE_LIFETIME_MINS</b></sup> | If this minutes passed, email verification code expires. | 30 |
+| <sup><b>EMAIL_BACKEND</b></sup> | Backend to send email. | django.core.mail.backends.smtp.EmailBackend |
+| <sup><b>EMAIL_HOST</b></sup> | URL of used email server. | smtp.gmail.com (If use gmail.) |
+| <sup><b>EMAIL_HOST_USER</b></sup> | Email address of sender. | `sender.my.awesome.app@xyz.xyz` |
+| <sup><b>EMAIL_HOST_PASSWORD</b></sup> | Password of used email address. | secret-password-hard-to-guess |
+| <sup><b>EMAIL_PORT</b></sup> | Port used by email server. | 587 |
+| <sup><b>EMAIL_USE_TLS</b></sup> | Flag to indicate use of TLS. | True |
+| <sup><b>MEDIA_ROOT</b></sup> | Directory name used to store media data(files). | media |
+| <sup><b>MEDIA_URL</b></sup> | Relative path starting with '/' and ending with '/' to directory to store media data. | /media/ |
+| <sup><b>PASSWORD_RESET_CODE_LENGTH</b></sup> | Length of code randomly generated, which is used to reset user password. | 32 |
+| <sup><b>PASSWORD_RESET_CODE_LIFETIME_MINS</b></sup> | Password reset code expires if this minutes passed. | 30 |
 
 
 #### 4. Launch docker container of postgres
