@@ -1,10 +1,8 @@
 # django-boilerplate
-A boilerplate of Django API server for multi-tenant application.
-This boilerplate is good starting point of an API server assuming the follows.
-* Multi-tenant application
-* Single Page Application; Eg. Frontend is built purely by Vue.js and Django focuses on Backend
-* By default Postgresql DB and gunicorn are used
-* Unit test with pytest, not with Django test.
+A boilerplate which will be a good starting point for...
+* Django API server assuming Single Page Application; Eg. Frontend is built purely by Vue.js and Django focuses on Backend
+* Multi-tenant application working with Postgresql and gunicorn
+* Unit test with pytest, not with Django test
 
 ## Requisites
 Python 3.8 or later
