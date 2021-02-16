@@ -94,16 +94,16 @@ class BaseModelSerializer(serializers.ModelSerializer):
                  if self.user.id is None else str(self.user.id))
     return updater
 
-  def createrstamp(self, validated_date):
+  def createrstamp(self, validated_data):
     creater = self._get_creater()
-    validated_date['created_by'] = creater
-    validated_date['updated_by'] = creater
-    return validated_date
+    validated_data['created_by'] = creater
+    validated_data['updated_by'] = creater
+    return validated_data
 
-  def updaterstamp(self, validated_date):
+  def updaterstamp(self, validated_data):
     updater = self._get_updater()
-    validated_date['updated_by'] = updater
-    return validated_date
+    validated_data['updated_by'] = updater
+    return validated_data
 
   def fill_missing_fields_by_instance(self, data):
     if self.instance is None:
