@@ -3,9 +3,16 @@ A boilerplate which will be a good starting point for...
 * Django RESTful API server for Single Page Application
 * Multi-tenant application working with Postgresql and gunicorn
 * Unit test with pytest, not with Django test
+* Authorization by JWT access/refresh tokens
 
 ## Requisites
-Python 3.8 or later
+* Python 3.8 or later
+* django 3.1 or later
+* django_rest_framework, django_rest_framework_simplejwt
+* django-environ, django-cleanup
+* psycopg2-binary
+* pytest, pytest-django, pytest-env, pytest-order
+* Docker, docker-compose
 
 ## Get started
 ### 1. Setup python virtualenv
