@@ -115,8 +115,8 @@ Prepare index.html which is used for your single page application. You can use [
 
 In case of using vue-boilerplate, you can place it at the same level as django-boilerplate as below.
 ```
-Web application root<br>
-├── vue-boilerplate (Of course you will have different name for your project)<br>
+Web application root
+├── vue-boilerplate (Of course you will have different name for your project)
 └── django-boilerplate (Of course you will have different name for your project)
 ```
 
