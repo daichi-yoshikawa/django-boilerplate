@@ -8,15 +8,14 @@ A boilerplate which will be a good starting point for...
 Python 3.8 or later
 
 ## Get started
-### Setup python
-#### 1. Setup virtualenv
+### 1. Setup python virtualenv
 Using Python virtualenv is strongly recommended. There're many tutorials to set it up so google it.
-#### 2. Pip install in virtualenv
+### 2. Pip install in virtualenv
 ```
 $ pip install --upgrade pip
 $ pip install -r requirements.txt
 ```
-#### 3. Edit .env file
+### 3. Edit .env file
 ```
 $ cp dot.env.default .env.development
 ```
@@ -60,7 +59,7 @@ Variable Name | Definition
 | <sup><b>PASSWORD_RESET_CODE_LIFETIME_MINS</b></sup> | Password reset code expires if this minutes passed. | 30 |
 
 
-#### 4. Launch docker container of postgres
+### 4. Launch docker container of postgres
 To launch postgres server for development,
 ```
 $ docker-compose --env-file .env.development up -d postgres
@@ -70,7 +69,7 @@ To launch postgres server for test,
 $ docker-compose --env-file .env.test up -d postgres_test
 ```
 
-#### 4.5 (Optional) Login postgres docker container
+### 4.5 (Optional) Login postgres docker container
 Install postgres client and login.
 ```
 $ sudo apt install postgresql-client
@@ -80,7 +79,7 @@ Eg.
 $ psql -U user_dev -h 127.0.0.1 -p 5432 -d postgres_dev
 ```
 
-#### 5. Make migrations and migrate
+### 5. Make migrations and migrate
 To migrate for development,
 ```
 $ cd <root-of-django-boilerplate>
@@ -99,11 +98,11 @@ $ DJANGO_ENV=development python manage.py reset_db
 OR
 $ DJANGO_ENV=test python manage.py reset_db
 ```
-#### 6. Run pytest to check if unit tests all passe
+### 6. Run pytest to check if unit tests all passe
 ```
 $ pytest
 ```
-#### 7. Run development server
+### 7. Run development server
 ```
 $ DJANGO_ENV=development python manage.py runserver
 ```
