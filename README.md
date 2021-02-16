@@ -27,7 +27,7 @@ Variable Name | Definition
 | Variable Name | Definition | Example |
 | ------------- | ---------- | ------- | 
 | APP_NAME | Application name. Used description in email, for example. | 'My Web App' |
-| APP_DOMAIN | URL of app | 'http://localhost:8000' |
+| APP_DOMAIN | URL of app | '`http://localhost:8000`' |
 | TENANT_DOMAIN_LENGTH | Length of tenant domain which is an identifier of each tenant used internally. | 32 |
 | TENANT_INVITATION_CODE_LENGTH | Length of secret code randomly generated which is used to invite user(s) to a tenant | 32 |
 | TENANT_INVITATION_CODE_LIFETIME_MINS | If minutes of this value passed, invitation code expires. | 360 |
@@ -50,7 +50,7 @@ Variable Name | Definition
 | EMAIL_VERIFICATION_CODE_LIFETIME_MINS | If this minutes passed, email verification code expires. | 30 |
 | EMAIL_BACKEND | Backend to send email. | django.core.mail.backends.smtp.EmailBackend |
 | EMAIL_HOST | URL of used email server. | smtp.gmail.com (If use gmail.) |
-| EMAIL_HOST_USER | Email address of sender. | sender.my.awesome.app@xyz.xyz |
+| EMAIL_HOST_USER | Email address of sender. | `sender.my.awesome.app@xyz.xyz` |
 | EMAIL_HOST_PASSWORD | Password of used email address. | secret-password-hard-to-guess |
 | EMAIL_PORT | Port used by email server. | 587 |
 | EMAIL_USE_TLS | Flag to indicate use of TLS. | True |
