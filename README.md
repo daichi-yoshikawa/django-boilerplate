@@ -168,3 +168,29 @@ When you define constant value, define class inheriting Enum to make it uneditab
 ### Add custom exceptions
 Exceptions are implemented in api/common/exceptions.py file. Inherit rest_framework.exceptions.APIException.
 If you'd like to assign specific HTTP status code for each exception, edit api/resources/exception_handler.py, exc2status_map dictionary.
+
+# Default endpoints
+| Endpoint | Usage | Request | Auth Required |
+| -------- | ----- | --------| ------------- |
+| POST /api/v1/token/ | Get access token and refresh token | email, password | False |
+| POST /api/v1/token/refresh/ | Refresh access token | refresh | True |
+| POST /api/v1/token/verify/ | Verify access token validity | N/A | True |
+| POST /api/v1/token/revoke/ | Revoke access token and refresh token | refresh | True |
+| POST /api/v1/users/ | Create user account | first_name, last_name, email, image, password, verification_code or invitation_code | True |
+| GET /api/v1/users/\<int:id\>/ | Get user data | N/A | True |
+| PUT /api/v1/users/\<int:id\>/ | Update user data | first_name and\/or last_name and\/or image | True |
+| DELETE /api/v1/users/\<int:id\>/ | Delete user account | N/A | True |
+| PUT /api/v1/users/\<int:id\>/password/ | Update user password | password, new_password | True |
+| GET /api/v1/users/\<int:id\>/tenants/ | Get associated tenant list | N/A | True |
+| POST /api/v1/email/signup/verification/ | Create email verification code and send signup link by email | email | False |
+| POST /api/v1/password/reset-code/ | Create password reset code and send reset link by email | email | False |
+| POST /api/v1/password/reset/ | Reset password with reset code | email, reset_code | False |
+| POST /api/v1/tenants/ | Create tenant | name, description | True |
+| GET /api/v1/tenants/\<str:domain\>/ | Get tenant data | N/A | True |
+| POST /api/v1/tenants/\<str:domain\>/invitation_codes/ | Create invitation code to tenant and send link by email | tenant_id, tenant_user_id, email | True |
+| POST /api/v1/tenants/invited/ | Get invited tenant data | email, invitation_code | True |
+| GET /api/v1/tenants/\<str:domain\>/users/ | Get tenant user list of tenant with specified domain | N/A | True |
+| POST /api/v1/tenants/\<str:domain\>/users/ | Create tenant user | tenant_id, user_id, invitation_code | True |
+| GET /api/v1/tenants/\<str:domain\>/users/\<int:id\>/ | Get tenant user data | N/A | True |
+
+
