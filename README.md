@@ -1,6 +1,6 @@
 # django-boilerplate
 A boilerplate which will be a good starting point for...
-* Django API server assuming Single Page Application; Eg. Frontend is built purely by Vue.js and Django focuses on Backend
+* Django RESTful API server for Single Page Application
 * Multi-tenant application working with Postgresql and gunicorn
 * Unit test with pytest, not with Django test
 
