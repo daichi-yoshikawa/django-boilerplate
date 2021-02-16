@@ -114,10 +114,11 @@ $ pytest
 Prepare index.html which is used for your single page application. You can use [vue-boilerplate](https://github.com/daichi-yoshikawa/vue-boilerplate).
 
 In case of using vue-boilerplate, you can place it at the same level as django-boilerplate as below.
-
+```
 Web application root<br>
 ├── vue-boilerplate (Of course you will have different name for your project)<br>
 └── django-boilerplate (Of course you will have different name for your project)
+```
 
 By default, vue-boilerplate will generate index.html under vue-boilerplate/dist/ and bundled js and css files under vue-boilerplate/dist/static directories respectively.
 For more details, refer to README.md of vue-boilerplate.
