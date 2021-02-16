@@ -127,7 +127,7 @@ For more details, refer to README.md of vue-boilerplate.
 $ DJANGO_ENV=development python manage.py runserver
 ```
 
-### 9. Open browser and access to localhost:8000/entry
+### 9. Access to index.html
 Open your favorite browser, and input localhost:8000/entry. You'll see entry page of sample web app now :)
 
 ## Structure
