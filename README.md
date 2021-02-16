@@ -172,25 +172,25 @@ If you'd like to assign specific HTTP status code for each exception, edit api/r
 # Default endpoints
 | Endpoint | Usage | Request | Auth Required |
 | -------- | ----- | --------| ------------- |
-| POST /api/v1/token/ | Get access token and refresh token | email, password | False |
-| POST /api/v1/token/refresh/ | Refresh access token | refresh | True |
-| POST /api/v1/token/verify/ | Verify access token validity | N/A | True |
-| POST /api/v1/token/revoke/ | Revoke access token and refresh token | refresh | True |
-| POST /api/v1/users/ | Create user account | first_name, last_name, email, image, password, verification_code or invitation_code | True |
-| GET /api/v1/users/\<int:id\>/ | Get user data | N/A | True |
-| PUT /api/v1/users/\<int:id\>/ | Update user data | first_name and\/or last_name and\/or image | True |
-| DELETE /api/v1/users/\<int:id\>/ | Delete user account | N/A | True |
-| PUT /api/v1/users/\<int:id\>/password/ | Update user password | password, new_password | True |
-| GET /api/v1/users/\<int:id\>/tenants/ | Get associated tenant list | N/A | True |
-| POST /api/v1/email/signup/verification/ | Create email verification code and send signup link by email | email | False |
-| POST /api/v1/password/reset-code/ | Create password reset code and send reset link by email | email | False |
-| POST /api/v1/password/reset/ | Reset password with reset code | email, reset_code | False |
-| POST /api/v1/tenants/ | Create tenant | name, description | True |
-| GET /api/v1/tenants/\<str:domain\>/ | Get tenant data | N/A | True |
-| POST /api/v1/tenants/\<str:domain\>/invitation_codes/ | Create invitation code to tenant and send link by email | tenant_id, tenant_user_id, email | True |
-| POST /api/v1/tenants/invited/ | Get invited tenant data | email, invitation_code | True |
-| GET /api/v1/tenants/\<str:domain\>/users/ | Get tenant user list of tenant with specified domain | N/A | True |
-| POST /api/v1/tenants/\<str:domain\>/users/ | Create tenant user | tenant_id, user_id, invitation_code | True |
-| GET /api/v1/tenants/\<str:domain\>/users/\<int:id\>/ | Get tenant user data | N/A | True |
+| <sup><b>POST /api/v1/token/</b></sup> | Get access token and refresh token | email, password | False |
+| <sup><b>POST /api/v1/token/refresh/</b></sup> | Refresh access token | refresh | True |
+| <sup><b>POST /api/v1/token/verify/</b></sup> | Verify access token validity | N/A | True |
+| <sup><b>POST /api/v1/token/revoke/</b></sup> | Revoke access token and refresh token | refresh | True |
+| <sup><b>POST /api/v1/users/</b></sup> | Create user account | first_name, last_name, email, image, password, verification_code or invitation_code | True |
+| <sup><b>GET /api/v1/users/\<int:id\>/</b></sup> | Get user data | N/A | True |
+| <sup><b>PUT /api/v1/users/\<int:id\>/</b></sup> | Update user data | first_name and\/or last_name and\/or image | True |
+| <sup><b>DELETE /api/v1/users/\<int:id\>/</b></sup> | Delete user account | N/A | True |
+| <sup><b>PUT /api/v1/users/\<int:id\>/password/</b></sup> | Update user password | password, new_password | True |
+| <sup><b>GET /api/v1/users/\<int:id\>/tenants/</b></sup> | Get associated tenant list | N/A | True |
+| <sup><b>POST /api/v1/email/signup/verification/</b></sup> | Create email verification code and send signup link by email | email | False |
+| <sup><b>POST /api/v1/password/reset-code/</b></sup> | Create password reset code and send reset link by email | email | False |
+| <sup><b>POST /api/v1/password/reset/</b></sup> | Reset password with reset code | email, reset_code | False |
+| <sup><b>POST /api/v1/tenants/</b></sup> | Create tenant | name, description | True |
+| <sup><b>GET /api/v1/tenants/\<str:domain\>/</b></sup> | Get tenant data | N/A | True |
+| <sup><b>POST /api/v1/tenants/\<str:domain\>/invitation_codes/</b></sup> | Create invitation code to tenant and send link by email | tenant_id, tenant_user_id, email | True |
+| <sup><b>POST /api/v1/tenants/invited/</b></sup> | Get invited tenant data | email, invitation_code | True |
+| <sup><b>GET /api/v1/tenants/\<str:domain\>/users/</b></sup> | Get tenant user list of tenant with specified domain | N/A | True |
+| <sup><b>POST /api/v1/tenants/\<str:domain\>/users/</b></sup> | Create tenant user | tenant_id, user_id, invitation_code | True |
+| <sup><b>GET /api/v1/tenants/\<str:domain\>/users/\<int:id\>/</b></sup> | Get tenant user data | N/A | True |
 
 
