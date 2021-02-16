@@ -4,6 +4,7 @@ This boilerplate is good starting point of an API server assuming the follows.
 * Multi-tenant application
 * Single Page Application; Eg. Frontend is built purely by Vue.js and Django focuses on Backend
 * By default Postgresql DB and gunicorn are used
+* Unit test with pytest, not with Django test.
 
 ## Requisites
 Python 3.8 or later
