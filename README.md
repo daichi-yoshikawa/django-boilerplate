@@ -185,7 +185,7 @@ When you define constant value, define class inheriting Enum to make it uneditab
 Exceptions are implemented in api/common/exceptions.py file. Inherit rest_framework.exceptions.APIException.
 If you'd like to assign specific HTTP status code for each exception, edit api/resources/exception_handler.py, exc2status_map dictionary.
 
-# Default endpoints
+## Default endpoints
 | Endpoint | Usage | Request | Auth Required |
 | -------- | ----- | --------| ------------- |
 | <sup><b>POST /api/v1/token/</b></sup> | Get access token and refresh token | email, password | False |
