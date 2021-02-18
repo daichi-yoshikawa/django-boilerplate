@@ -8,4 +8,4 @@ class BUILTIN_USER(Enum):
 
 class TENANT_USER_ROLE_TYPE(Enum):
   GENERAL = 0
-  ADMIN = 1
+  ADMIN = 100
