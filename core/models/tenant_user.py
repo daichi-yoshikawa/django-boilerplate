@@ -11,7 +11,7 @@ class TenantAdminManager(models.Manager):
 
 
 class TenantUser(BaseTenantModel):
-  class Meta:
+  class Meta(BaseTenantModel.Meta):
     db_table = 'tenant_users'
     constraints = [
       models.UniqueConstraint(

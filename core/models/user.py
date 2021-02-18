@@ -13,7 +13,7 @@ def get_user_image_path(instance, filename):
 
 
 class User(BaseUserModel):
-  class Meta:
+  class Meta(BaseUserModel.Meta):
     db_table = 'users'
 
   email = models.EmailField(

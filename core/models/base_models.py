@@ -7,6 +7,7 @@ from django.db import models
 class BaseModel(models.Model):
   class Meta:
     abstract = True
+    ordering = ['-updated_at']
 
   created_by = models.CharField(
       max_length=20, unique=False, null=False, blank=False, default='system')
@@ -85,6 +86,7 @@ class UserManager(BaseUserManager):
 class BaseUserModel(AbstractUser):
   class Meta:
     abstract = True
+    ordering = ['-updated_at']
 
   username = None
   created_by = models.CharField(
@@ -104,6 +106,7 @@ class BaseUserModel(AbstractUser):
 class BaseTenantModel(BaseModel):
   class Meta:
     abstract = True
+    ordering = ['-updated_at']
 
   tenant = models.ForeignKey(
       'Tenant', unique=False, null=False, blank=False, on_delete=models.CASCADE)

@@ -8,7 +8,7 @@ from core.models.base_models import BaseModel
 
 
 class EmailVerificationCode(BaseModel):
-  class Meta:
+  class Meta(BaseModel.Meta):
     db_table = 'email_verification_codes'
 
   email = models.EmailField(

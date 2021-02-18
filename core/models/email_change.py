@@ -4,7 +4,7 @@ from core.models.base_models import BaseModel
 
 
 class EmailChange(BaseModel):
-  class Meta:
+  class Meta(BaseModel.Meta):
     db_table = 'email_changes'
 
   user = models.ForeignKey(

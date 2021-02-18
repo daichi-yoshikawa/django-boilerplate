@@ -14,7 +14,7 @@ def get_tenant_image_path(instance, filename):
 
 
 class Tenant(BaseModel):
-  class Meta:
+  class Meta(BaseModel.Meta):
     db_table = 'tenants'
 
   name = models.CharField(

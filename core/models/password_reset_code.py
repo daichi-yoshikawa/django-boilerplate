@@ -8,7 +8,7 @@ from core.models.base_models import BaseModel
 
 
 class PasswordResetCode(BaseModel):
-  class Meta:
+  class Meta(BaseModel.Meta):
     db_table = 'password_reset_codes'
 
   email = models.EmailField(

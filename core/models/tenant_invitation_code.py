@@ -8,7 +8,7 @@ from core.models.base_models import BaseTenantModel
 
 
 class TenantInvitationCode(BaseTenantModel):
-  class Meta:
+  class Meta(BaseTenantModel.Meta):
     db_table = 'tenant_invitation_codes'
 
   tenant_user = models.ForeignKey(
