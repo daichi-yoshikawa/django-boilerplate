@@ -6,29 +6,18 @@ import environ
 from django.core.exceptions import ImproperlyConfigured
 
 
-DJANGO_ENV_LIST = ['production', 'development', 'test']
-if 'DJANGO_ENV' not in os.environ:
-  msg = (f'Environment variable DJANGO_ENV is not set yet.\n'
-         f'Usage: DJANGO_ENV=<mode> <your command>\n'
-         f'Example: DJANGO_ENV=development python manage.py runserver\n'
-         f'Modes: {DJANGO_ENV_LIST}')
-  raise ImproperlyConfigured(msg)
-DJANGO_ENV = os.environ['DJANGO_ENV']
-if DJANGO_ENV not in DJANGO_ENV_LIST:
-  msg = (f'Invalid DJANGO_ENV is set: {DJANGO_ENV}\n'
-         f'DJANGO_ENV must be one of {str(DJANGO_ENV_LIST)}.')
-  raise ImproperlyConfigured(msg)
-
+DJANGO_TEST = os.environ.get('DJANGO_TEST', False)
 root = environ.Path(__file__) - 1
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 env = environ.Env()
-environ.Env.read_env(os.path.join(BASE_DIR, f'.env.{DJANGO_ENV}'))
+if not DJANGO_TEST:
+  environ.Env.read_env(os.path.join(BASE_DIR, f'.env'))
 
 APP_NAME = env.str('APP_NAME')
 APP_DOMAIN = env.str('APP_DOMAIN')
 SECRET_KEY = env.str('DJANGO_SECRET_KEY')
-DEBUG = env.bool('DJANGO_DEBUG', default=False) & (DJANGO_ENV != 'production')
+DEBUG = env.bool('DJANGO_DEBUG', default=False)
 
 ALLOWED_HOSTS = ['*']
 CORS_ORIGIN_ALLOW_ALL = True
