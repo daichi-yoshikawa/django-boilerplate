@@ -1,0 +1,14 @@
+version: "3"
+services:
+  postgres:
+    container_name: postgres_test_server
+    image: 'postgres:12.4'
+    restart: always
+    environment:
+      - POSTGRES_DB=postgres_test
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=postgres_test
+    ports:
+      - 5432:5432
+    volumes:
+      - ./data/postgres_test:/var/lib/postgresql/data
