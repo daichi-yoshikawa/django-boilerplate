@@ -118,12 +118,21 @@ Web application root
 By default, vue-boilerplate will generate index.html under vue-boilerplate/dist/ and bundled js and css files under vue-boilerplate/dist/static directories respectively.
 For more details, refer to README.md of vue-boilerplate.
 
-### 8. Run development server
+### 8. Run development server (production? Proceed to section 9-10)
 ```
 $ python manage.py runserver
 ```
 
-### 9. Access to index.html
+### 9. Edit gunicorn config file (for production)
+Edit gunicorn.conf.py to configure gunicorn. This file is automatically loaded when gunicorn is launched. If you use development server, you don't need to edit this file.
+
+### 10. Run gunicorn (for production)
+If you use use development server, you don't need to run gunicorn.
+```
+$ gunicorn config.wsgi
+```
+
+### 11. Access to index.html
 Open your favorite browser, and input localhost:8000/entry. You'll see entry page of sample web app now :)
 
 ## Directory Structure
