@@ -22,14 +22,11 @@ Using Python virtualenv is strongly recommended. There're many tutorials to set 
 $ pip install --upgrade pip
 $ pip install -r requirements.txt
 ```
-### 3. Edit .env file
+### 3. Edit .env file (or pytest.ini for test)
+Environmental variables for development and production are supposed to be set in .env file located in root directory, and ones for test are defined in pytest.ini file. If you work on .env, you can use dot.env.default, which is a template of .env.
 ```
-$ cp dot.env.default .env.development
+$ cp dot.env.default .env
 ```
-Note: If you create .env file for production or test, create .env.production or .env.test respectively.
-.env file includes the following environmental variables.
-Variable Name | Definition
-
 | Variable Name | Definition | Example |
 | ------------- | ---------- | ------- | 
 | <sup><b>APP_NAME</b></sup> | Application name. Used description in email, for example. | 'My Web App' |
@@ -69,11 +66,11 @@ Variable Name | Definition
 ### 4. Launch docker container of postgres
 To launch postgres server for development,
 ```
-$ docker-compose --env-file .env.development up -d postgres
+$ docker-compose --env-file .env up -d postgres
 ```
 To launch postgres server for test,
 ```
-$ docker-compose --env-file .env.test up -d postgres_test
+$ docker-compose -f docker-compose.test.yml up -d postgres
 ```
 
 ### 4.5 (Optional) Login postgres docker container
@@ -90,22 +87,19 @@ $ psql -U user_dev -h 127.0.0.1 -p 5432 -d postgres_dev
 To migrate for development,
 ```
 $ cd <root-of-django-boilerplate>
-$ DJANGO_ENV=development python manage.py makemigrations
-$ DJANGO_ENV=development python manage.py migrate
+$ python manage.py makemigrations
+$ python manage.py migrate
 ```
-To migrate for test,
+For test, you don't need to call migrate because pytest internally call command to reset and migrate database used for test as you can see in api/tests/conftest.py.
 ```
 $ cd <root-of-django-boilerplate>
-$ DJANGO_ENV=development python manage.py makemigrations
-$ DJANGO_ENV=development python manage.py migrate
+$ python manage.py makemigrations
 ```
-If you mess up database tables for some reasons and would like to reset db, you can drop all tables by follow.
+If you mess up database tables for some reasons and would like to reset db, you can drop all tables by follow. Again, you don't need to call the follow for test because reset_db and migrate are called every time pytest is executed.
 ```
-$ DJANGO_ENV=development python manage.py reset_db
-OR
-$ DJANGO_ENV=test python manage.py reset_db
+$ python manage.py reset_db
 ```
-### 6. Run pytest to check if unit tests all passe
+### 6. Run pytest to check if unit tests all pass
 ```
 $ pytest
 ```
@@ -125,7 +119,7 @@ For more details, refer to README.md of vue-boilerplate.
 
 ### 8. Run development server
 ```
-$ DJANGO_ENV=development python manage.py runserver
+$ python manage.py runserver
 ```
 
 ### 9. Access to index.html
@@ -148,7 +142,7 @@ By default, log file is generated under this directory with name of application.
 ### static
 For production, gunicorn or equivalent software is used instead of django development server. When using these software, you need to execute the follow first. Collected static files are stored in this directory.
 ```
-$ DJANGO_ENV=production python manage.py collectstatic
+$ python manage.py collectstatic
 ```
 
 ### media
@@ -164,9 +158,8 @@ If you decide to launch postgres server on the same server where django is runni
 3. Add the created class to core/models/\_\_init\_\_.py
 4. Make migratiosn and migrate(See below). If you'd like to apply the migration to multiple envs, migrate for each env.
 ```
-$ DJANGO_ENV=develpoment python manage.py makemigrations
-$ DJANGO_ENV=development python manage.py migrate
-$ DJANGO_ENV=test python manage.py migrate
+$ python manage.py makemigrations
+$ python manage.py migrate
 ```
 
 ### Add serializers

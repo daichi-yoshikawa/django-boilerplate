@@ -22,15 +22,32 @@ class BaseModelSerializer(serializers.ModelSerializer):
          user_id = serializers.IntegerField(write_only=True)
      You may add required=True to user_id's argument.
   6. If need to extends create method, you can override it but
-     do not forget to call self.createrstamp method.
-     Eg.)def create(self, validated_date):
-           validated_data = self.createrstamp(validated_data)
-           # Do whatever you like
+     do not forget to call self.createrstamp method and save method of model
+     in case of that you don't use super().create in it.
+     Eg1.)def create(self, validated_date):
+            validated_data = self.createrstamp(validated_data) # <- Call this!
+            user = models.User(**validated_data)
+            user.set_password(user.password)
+            user.save() # <- Call this!
+            return user
+     Eg2.)def create(self, validated_date):
+            validated_data.pop('unused_field')
+            return super().create(validated_data)
+     Note: In super().create, self.createrstamp and save method are called.
   7. If need to extends update method, you can override it but
-     do not forget to call self.updaterstamp method.
-     Eg.)def update(self, instance, validated_data):
-           validated_data = self.updaterstamp(validated_data)
-           # Do whatever you like
+     do not forget to call self.updaterstamp method and save method of model
+     in case of that you don't use super().update in it.
+     Eg.1)def update(self, instance, validated_data):
+            validated_data = self.updaterstamp(validated_data) # <- Call this!
+            if 'password' in validated_data:
+              instance.set_password(validated_data['password']:
+            instance.save() # <- Call this!
+            return instance
+     Eg.2)def update(self, instance, validated_data):
+            validated_data['code'] = generate_code(length=10)
+            instance = super().update(instance, validated_data)
+            return instance
+     Note: In super().update, self.updaterstamp and save method are called.
   8. If need to implement validate method, define validate method.
      You can use self.tenant_user or self.user if these are given
      to the constructor. Here, tenant_user is given by tenant_user_api decorator.
