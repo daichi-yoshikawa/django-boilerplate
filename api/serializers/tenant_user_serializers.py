@@ -42,7 +42,6 @@ class InvitedTenantUserSerializer(BaseModelSerializer):
     model = models.TenantUser
 
   def create(self, validated_data):
-    validated_data = self.createrstamp(validated_data)
     validated_data.pop('invitation_code')
     return super().create(validated_data)
 

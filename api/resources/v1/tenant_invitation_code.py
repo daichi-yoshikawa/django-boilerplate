@@ -25,20 +25,17 @@ class TenantInvitationCodeListView(APIView):
     serializer = serializers.TenantInvitationCodeSerializer(
         data=request.data, tenant_user=tenant_user, many=True)
     serializer.is_valid(raise_exception=True)
-
-    tenant_invitation_codes = serializer.save()
-    for tenant_invitation_code in tenant_invitation_codes:
-      tenant_invitation_code.save()
+    serializer.save()
 
     self.send_invitation_code(
         tenant=tenant_user.tenant, sender=tenant_user,
-        obj_list=tenant_invitation_codes)
+        data=serializer.data)
 
     return Response(serializer.data, status=status.HTTP_200_OK)
 
-  def send_invitation_code(self, tenant, sender, obj_list):
-    emails = [obj.email for obj in obj_list]
-    codes = [obj.invitation_code for obj in obj_list]
+  def send_invitation_code(self, tenant, sender, data):
+    emails = [d['email'] for d in data]
+    codes = [d['invitation_code'] for d in data]
     emails, codes = self.drop_existing_tenant_users(
         tenant_id=tenant.id, emails=emails, codes=codes)
     mass_messages = tuple()

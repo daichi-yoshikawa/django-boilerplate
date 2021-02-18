@@ -47,6 +47,7 @@ class TenantInvitationCodeSerializer(BaseModelSerializer):
     validated_data = self.createrstamp(validated_data)
     tenant_invitation_code = models.TenantInvitationCode(**validated_data)
     tenant_invitation_code.set_invitation_code()
+    tenant_invitation_code.save()
     return tenant_invitation_code
 
   def validate(self, data):

@@ -21,7 +21,6 @@ class TenantListView(APIView):
         data=request.data, user=request.user)
     serializer.is_valid(raise_exception=True)
     tenant = serializer.save()
-    tenant.save()
     ret = serializer.data
 
     data = {
@@ -32,8 +31,7 @@ class TenantListView(APIView):
     serializer = serializers.TenantUserSerializer(
         data=data, user=request.user, tenant=tenant)
     serializer.is_valid(raise_exception=True)
-    tenant_user = serializer.save()
-    tenant_user.save()
+    serializer.save()
 
     return Response(ret, status=status.HTTP_200_OK)
 

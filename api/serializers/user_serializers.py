@@ -40,6 +40,7 @@ class NewUserSerializer(BaseModelSerializer):
 
     user = models.User(**validated_data)
     user.set_password(validated_data['password'])
+    user.save()
     return user
 
   def validate(self, data):
@@ -80,13 +81,11 @@ class UserSerializer(BaseModelSerializer):
     validated_data = self.createrstamp(validated_data)
     user = models.User(**validated_data)
     user.set_password(validated_data['password'])
+    user.save()
     return user
 
   def update(self, instance, validated_data):
-    validated_data = self.updaterstamp(validated_data)
-
     instance = super().update(instance, validated_data)
-
     if 'password' in validated_data:
       instance.set_password(validated_data['password'])
     instance.save()
@@ -103,7 +102,6 @@ class UserPasswordSerializer(BaseModelSerializer):
     fields = ('password', 'new_password',)
 
   def update(self, instance, validated_data):
-    validated_data = self.updaterstamp(validated_data)
     validated_data['password'] = validated_data['new_password']
     validated_data.pop('new_password')
 

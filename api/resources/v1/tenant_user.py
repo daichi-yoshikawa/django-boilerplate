@@ -41,7 +41,6 @@ class TenantUserListView(APIView):
         data=request.data, tenant=tenant, user=request.user)
     serializer.is_valid(raise_exception=True)
     tenant_user = serializer.save()
-    tenant_user.save()
 
     self.delete_invitation_codes(tenant_user.user.email)
 

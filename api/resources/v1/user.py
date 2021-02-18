@@ -24,7 +24,6 @@ class UserListView(APIView):
         data=request.data, user=request.user)
     serializer.is_valid(raise_exception=True)
     user = serializer.save()
-    user.save()
 
     self.delete_email_verification_codes(email=user.email)
     return Response(serializer.data, status=status.HTTP_201_CREATED)

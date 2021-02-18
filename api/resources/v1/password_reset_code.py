@@ -27,7 +27,6 @@ class PasswordResetCodeView(APIView):
         data=request.data, user=request.user)
     serializer.is_valid(raise_exception=True)
     reset_code = serializer.save()
-    reset_code.save()
 
     self.send_reset_code(
         email=reset_code.email, reset_code=reset_code.reset_code)

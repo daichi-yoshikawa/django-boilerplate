@@ -17,6 +17,7 @@ class PasswordResetCodeSerializer(BaseModelSerializer):
     validated_data = self.createrstamp(validated_data)
     password_reset_code = models.PasswordResetCode(**validated_data)
     password_reset_code.set_reset_code()
+    password_reset_code.save()
     return password_reset_code
 
   def validate(self, data):
@@ -40,7 +41,6 @@ class PasswordResetSerializer(BaseModelSerializer):
     }
 
   def update(self, instance, validated_data):
-    validated_data = self.updaterstamp(validated_data)
     instance = super().update(instance, validated_data)
     instance.set_password(validated_data['password'])
     instance.save()

@@ -16,8 +16,6 @@ class TenantSerializer(BaseModelSerializer):
     return request.build_absolute_url(image)
 
   def create(self, validated_data):
-    validated_data = self.createrstamp(validated_data)
     validated_data['domain'] = utils.generate_random_letters(
         length=settings.TENANT_DOMAIN_LENGTH)
-    tenant = models.Tenant(**validated_data)
-    return tenant
+    return super().create(validated_data)

@@ -14,6 +14,7 @@ class EmailVerificationCodeSerializer(BaseModelSerializer):
     validated_data = self.createrstamp(validated_data)
     email_verification_code = models.EmailVerificationCode(**validated_data)
     email_verification_code.set_verification_code()
+    email_verification_code.save()
     return email_verification_code
 
 
