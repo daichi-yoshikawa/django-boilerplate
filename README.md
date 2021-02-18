@@ -27,6 +27,7 @@ Environmental variables for development and production are supposed to be set in
 ```
 $ cp dot.env.default .env
 ```
+#### Table of Environmental Variables
 | Variable Name | Definition | Example |
 | ------------- | ---------- | ------- | 
 | <sup><b>APP_NAME</b></sup> | Application name. Used description in email, for example. | 'My Web App' |
@@ -90,12 +91,12 @@ $ cd <root-of-django-boilerplate>
 $ python manage.py makemigrations
 $ python manage.py migrate
 ```
-For test, you don't need to call migrate because pytest internally call command to reset and migrate database used for test as you can see in api/tests/conftest.py.
+For test, you don't need to call migrate because the command to reset and migrate test used for teset are internally called as you can see in api/tests/conftest.py.
 ```
 $ cd <root-of-django-boilerplate>
 $ python manage.py makemigrations
 ```
-If you mess up database tables for some reasons and would like to reset db, you can drop all tables by follow. Again, you don't need to call the follow for test because reset_db and migrate are called every time pytest is executed.
+If you mess up database tables for some reasons and would like to reset db, you can drop all tables by follow. You don't need to call the follow for test because reset_db and migrate are called every time pytest is executed.
 ```
 $ python manage.py reset_db
 ```
@@ -125,7 +126,7 @@ $ python manage.py runserver
 ### 9. Access to index.html
 Open your favorite browser, and input localhost:8000/entry. You'll see entry page of sample web app now :)
 
-## Structure
+## Directory Structure
 ### core
 You define/extend models under this directory. Also, migration files are supposed to be contained in this.
 If you implement commands used like "python manage.py \<command\>", core/management/commands is used. core/views has only one view by default. It is supposed to return index.html, which is a root html file used for a single page application.
