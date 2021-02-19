@@ -14,7 +14,34 @@ A boilerplate which will be a good starting point for...
 * pytest, pytest-django, pytest-env, pytest-order
 * Docker, docker-compose
 
+You can see the details of used python packages in requirements.txt.
+Major packages are illustrated in the table below.
+#### Table of installed python packages
+| Package | Usage |
+| ------- | ------ |
+| djangorestframework | Implement RESTful API classes |
+| djangorestframework-simplejwt | Json web token used for auth |
+| django-environ | Read .env file |
+| django-cleanup | Uploaded file in dir is properly deleted |
+| gunicorn | Python wsgi http server used for production |
+| psycopg2-binary | Access to postgresql DB |
+| pytest | Unit test tool alternative to built-in Django test |
+| pytest-django | pytest extention for django framework |
+| pytest-env | Enable to set env vars  in pytest.ini |
+| python-box | Enable dot access of dictionary values |
+
 ## Get started
+### 0. Use docker-compose
+If you use docker-compose, you just follow step 3, 7 and 9 first. And then launch docker-compose as below.
+```
+$ docker-compose up -d
+```
+You can check containers are running correctly.
+```
+$ docker ps -a
+```
+Once you checked containers are up and running, proceed to step 11.
+
 ### 1. Setup python virtualenv
 Using Python virtualenv is strongly recommended. There're many tutorials to set it up so google it.
 ### 2. Pip install in virtualenv
@@ -67,7 +94,7 @@ $ cp dot.env.default .env
 ### 4. Launch docker container of postgres
 To launch postgres server for development,
 ```
-$ docker-compose --env-file .env up -d postgres
+$ docker-compose up -d postgres
 ```
 To launch postgres server for test,
 ```
@@ -217,5 +244,37 @@ If you'd like to assign specific HTTP status code for each exception, edit api/r
 | <sup><b>GET /api/v1/tenants/\<str:domain\>/users/</b></sup> | Get tenant user list of tenant with specified domain | N/A | True |
 | <sup><b>POST /api/v1/tenants/\<str:domain\>/users/</b></sup> | Create tenant user | tenant_id, user_id, invitation_code | True |
 | <sup><b>GET /api/v1/tenants/\<str:domain\>/users/\<int:id\>/</b></sup> | Get tenant user data | N/A | True |
+
+## Helpful Commnads for Trouble Shooting
+### Clearning up docker containers
+Check existing containers.
+```
+$ docker container ls -a
+```
+Stop and remove all containers.
+```
+$ docker stop $(docker ps -q)
+$ docker rm $(docker ps -qa)
+```
+Delete all images
+```
+$ docker rmi $(docker images -q)
+```
+Get in terminal in running container.
+```
+$ docker exec -it <container name/ID> /bin/bash
+```
+
+### Clearning up database
+You may need to delete directory mounted to postgres docker container, especially when you clean up all relevant docker containers to start over the setup.
+```
+Eg.)
+$ sudo rm -r ./data/postgres_dev
+```
+Or you may like to clear all record in db and reset sequences as well. In the case drop all tables and rebuild tables again.
+```
+$ python manage.py reset_db
+$ python manage.py migrate
+```
 
 
