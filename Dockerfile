@@ -12,5 +12,4 @@ RUN pip install --upgrade pip && \
 RUN apt-get update && \
     apt-get install -y --no-install-recommends less procps
 
-EXPOSE 5000
 CMD /bin/bash
