@@ -21,7 +21,10 @@ class EmailVerificationCodeView(APIView):
     serializer = serializers.EmailVerificationCodeSerializer(
         data=request.data, user=request.user)
     serializer.is_valid(raise_exception=True)
-    serializer.save()
+    obj = serializer.save()
+
+    self.send_verification_code(
+        email=obj.email, verification_code=obj.verification_code)
 
     return Response(serializer.data, status=status.HTTP_200_OK)
 
