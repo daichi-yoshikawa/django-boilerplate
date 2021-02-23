@@ -36,7 +36,7 @@ urlpatterns = [
   path('tenants/<str:domain>/users/<int:pk>/',
        v1.TenantUserView.as_view(),
        name='tenant_user'),
-  path('tenants/<str:domain>/invitation_codes/',
+  path('tenants/<str:domain>/invitation-codes/',
        v1.TenantInvitationCodeListView.as_view(),
        name='tenant_invitation_codes'),
 ]

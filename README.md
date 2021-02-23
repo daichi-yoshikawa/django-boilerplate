@@ -247,7 +247,7 @@ If you'd like to assign specific HTTP status code for each exception, edit api/r
 | <sup><b>POST /api/v1/password/reset/</b></sup> | Reset password with reset code | email, reset_code | False |
 | <sup><b>POST /api/v1/tenants/</b></sup> | Create tenant | name, description | True |
 | <sup><b>GET /api/v1/tenants/\<str:domain\>/</b></sup> | Get tenant data | N/A | True |
-| <sup><b>POST /api/v1/tenants/\<str:domain\>/invitation_codes/</b></sup> | Create invitation code to tenant and send link by email | tenant_id, tenant_user_id, email | True |
+| <sup><b>POST /api/v1/tenants/\<str:domain\>/invitation-codes/</b></sup> | Create invitation code to tenant and send link by email | tenant_id, tenant_user_id, email | True |
 | <sup><b>POST /api/v1/tenants/invited/</b></sup> | Get invited tenant data | email, invitation_code | True |
 | <sup><b>GET /api/v1/tenants/\<str:domain\>/users/</b></sup> | Get tenant user list of tenant with specified domain | N/A | True |
 | <sup><b>POST /api/v1/tenants/\<str:domain\>/users/</b></sup> | Create tenant user | tenant_id, user_id, invitation_code | True |
