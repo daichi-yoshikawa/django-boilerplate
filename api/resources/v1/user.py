@@ -8,7 +8,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from api import serializers
-from api.common import exceptions
+from api.resources.decorators import strict_user_data_api, user_data_api
 from api.resources.paginator import Paginator
 from core import models
 
@@ -36,18 +36,14 @@ class UserListView(APIView):
 
 
 class UserView(APIView):
+  @user_data_api
   def get(self, request, pk):
-    if pk != 0 and pk != request.user.id:
-      raise exceptions.OwnershipError()
-
     user = models.User.objects.get(pk=request.user.id if pk == 0 else pk)
     serializer = serializers.UserSerializer(user)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
+  @strict_user_data_api
   def put(self, request, pk):
-    if pk != request.user.id:
-      raise exceptions.OwnershipError()
-
     user = models.User.objects.get(pk=request.user.pk)
     serializer = serializers.UserSerializer(
         user, data=request.data, user=request.user, partial=True)
@@ -56,10 +52,8 @@ class UserView(APIView):
 
     return Response(serializer.data, status=status.HTTP_200_OK)
 
+  @strict_user_data_api
   def delete(self, request, pk):
-    if pk != request.user.id:
-      raise exceptions.OwnershipError()
-
     user = models.User.objects.get(pk=request.user.pk)
     serializer = serializers.UserSerializer(user)
     ret = serializer.data
@@ -69,10 +63,8 @@ class UserView(APIView):
 
 
 class UserPasswordView(APIView):
+  @strict_user_data_api
   def put(self, request, pk):
-    if pk != request.user.id:
-      raise exceptions.OwnershipError()
-
     user = models.User.objects.get(pk=pk)
     serializer = serializers.UserPasswordSerializer(
         user, data=request.data, user=request.user)
@@ -83,10 +75,8 @@ class UserPasswordView(APIView):
 
 
 class UserTenantListView(APIView):
+  @strict_user_data_api
   def get(self, request, pk):
-    if pk != request.user.id:
-      raise exceptions.OwnershipError()
-
     query = models.TenantUser.objects.filter(user_id=request.user.id)
     query = query.order_by('-created_at')
     paginator = Paginator(query, request.query_params)
