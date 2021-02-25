@@ -9,6 +9,26 @@ from core import models
 
 logger = logging.getLogger(__name__)
 
+
+def get_tenant_from_domain(**kwargs):
+  if 'domain' not in kwargs:
+    raise ValidationError('domain is missing in endpoint.')
+  query = models.Tenant.objects.filter(domain=kwargs['domain'])
+  if not query.exists():
+    raise ValidationError(f'Tenant({kwargs["domain"]}) not found.')
+  return query.get()
+
+
+def get_tenant_user_from_request_and_tenant(request, tenant):
+  query = models.TenantUser.objects.filter(
+      tenant_id=tenant.id, user_id=request.user.id)
+  if not query.exists():
+    raise ValidationError(
+        f'Tenant user(user_id: {request.user.id}, '
+        f'domain:{tenant.domain}) not found.')
+  return query.get()
+
+
 def tenant_user_api(wrapped_func):
   def tenant_user_api_impl(*args, **kwargs):
     """
@@ -18,22 +38,10 @@ def tenant_user_api(wrapped_func):
     """
     ret = { 'action': wrapped_func.__name__, }
 
-    if 'domain' not in kwargs:
-      raise ValidationError('domain is missing in endpoint.')
-    query = models.Tenant.objects.filter(domain=kwargs['domain'])
-    if not query.exists():
-      raise ValidationError(
-          f'Tenant({kwargs["domain"]}) not found.')
-    tenant_id = query.get().id
-
-    request = args[1]
-    query = models.TenantUser.objects.filter(
-        tenant_id=tenant_id, user_id=request.user.id)
-    if not query.exists():
-      raise ValidationError(
-          f'Tenant user(user_id: {request.user.id}, '
-          f'domain:{kwargs["domain"]}) not found.')
-    serializer = serializers.TenantUserSerializer(query.get())
+    tenant = get_tenant_from_domain(**kwargs)
+    tenant_user = get_tenant_user_from_request_and_tenant(
+        request=args[1], tenant=tenant)
+    serializer = serializers.TenantUserSerializer(tenant_user)
     args += (Box(serializer.data),)
 
     return wrapped_func(*args, **kwargs)
@@ -49,9 +57,7 @@ def tenant_api(wrapped_func):
     """
     ret = { 'action': wrapped_func.__name__, }
 
-    if 'domain' not in kwargs:
-      raise ValidationError('domain is missing in endpoint.')
-    tenant = models.Tenant.objects.get(domain=kwargs['domain'])
+    tenant = get_tenant_from_domain(**kwargs)
     serializer = serializers.TenantSerializer(tenant)
     args += (Box(serializer.data),)
 
