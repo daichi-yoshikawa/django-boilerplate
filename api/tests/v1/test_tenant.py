@@ -96,11 +96,11 @@ class TestTenant:
     assert res.data['name'] == tenant_name_from(req['data']['tenant_id'])
 
   @pytest.mark.parametrize('req, expected', [
-    (dict(user_id=1, tenant_id=1, tgt_tenant_id=1, data=[dict(
-        tenant_id=1, email=email_from(seed=4))]),
+    (dict(user_id=1, tenant_id=1, tgt_tenant_id=1,
+          data=[dict(email=email_from(seed=4))]),
      dict(status=200)),
-    (dict(user_id=1, tenant_id=1, tgt_tenant_id=2, data=[dict(
-        tenant_id=2, email=email_from(seed=5))]),
+    (dict(user_id=1, tenant_id=1, tgt_tenant_id=2,
+          data=[dict(email=email_from(seed=5))]),
      dict(status=400)),
   ])
   def test_create_tenant_invitation_code(
