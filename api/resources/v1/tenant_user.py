@@ -29,7 +29,7 @@ class TenantUserListView(APIView):
     ret.update(paginator.get_profile())
 
     serializer = serializers.TenantUserSerializer(tenant_user, many=True)
-    ret['tenant_users'].append(serializer.data)
+    ret['tenant_users'] = serializer.data
     return Response(ret, status=status.HTTP_200_OK)
 
   @tenant_api
