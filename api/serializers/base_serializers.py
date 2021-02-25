@@ -79,7 +79,7 @@ class BaseModelSerializer(serializers.ModelSerializer):
 
   def __init__(
       self, instance=None, data=empty, tenant=None, tenant_user=None, user=None,
-      extra_kwargs=None, **kwargs):
+      extra_request=None, **kwargs):
     super().__init__(instance=instance, data=data, **kwargs)
     self.tenant = tenant
     self.tenant_user = tenant_user
