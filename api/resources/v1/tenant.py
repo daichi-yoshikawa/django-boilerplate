@@ -24,12 +24,12 @@ class TenantListView(APIView):
     ret = serializer.data
 
     data = {
-      'tenant_id': tenant.id,
       'user_id': request.user.id,
       'role_type': constants.TENANT_USER_ROLE_TYPE.ADMIN.value,
     }
     serializer = serializers.TenantUserSerializer(
-        data=data, user=request.user, tenant=tenant)
+        data=data, user=request.user, tenant=tenant,
+        extra_request=dict(tenant_id=tenant.id))
     serializer.is_valid(raise_exception=True)
     serializer.save()
 

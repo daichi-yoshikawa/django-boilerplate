@@ -179,8 +179,7 @@ class TestTenant:
     query = models.TenantInvitationCode.objects.filter(email=email)
     invitation_code = query.get().invitation_code
     req['data'] = dict(
-        tenant_id=req['tenant_id'], user_id=req['user_id'],
-        invitation_code=invitation_code)
+        user_id=req['user_id'], invitation_code=invitation_code)
 
     # Execution
     res = client.post(
@@ -191,7 +190,7 @@ class TestTenant:
 
     # Common postprocess
     query = model.objects.filter(
-        tenant_id=req['data']['tenant_id'], user_id=req['data']['user_id'])
+        tenant_id=req['tenant_id'], user_id=req['data']['user_id'])
 
     # if status is error...
     if not is_ok(res.status_code):
@@ -202,7 +201,7 @@ class TestTenant:
     # if status is ok...
     assert n_data + 1 == model.objects.all().count()
     assert query.exists()
-    assert res.data['tenant']['id'] == req['data']['tenant_id']
+    assert res.data['tenant']['id'] == req['tenant_id']
     assert res.data['user']['id'] == req['data']['user_id']
 
   @pytest.mark.parametrize('req, expected', [

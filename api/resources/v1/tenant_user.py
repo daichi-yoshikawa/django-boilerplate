@@ -28,17 +28,16 @@ class TenantUserListView(APIView):
     }
     ret.update(paginator.get_profile())
 
-    for tenant_user in page_objects:
-      serializer = serializers.TenantUserSerializer(tenant_user)
-      ret['tenant_users'].append(serializer.data)
-
+    serializer = serializers.TenantUserSerializer(tenant_user, many=True)
+    ret['tenant_users'].append(serializer.data)
     return Response(ret, status=status.HTTP_200_OK)
 
   @tenant_api
   @transaction.atomic
   def post(self, request, tenant, domain):
     serializer = serializers.InvitedTenantUserSerializer(
-        data=request.data, tenant=tenant, user=request.user)
+        data=request.data, tenant=tenant, user=request.user,
+        extra_request=dict(tenant_id=tenant.id))
     serializer.is_valid(raise_exception=True)
     tenant_user = serializer.save()
 

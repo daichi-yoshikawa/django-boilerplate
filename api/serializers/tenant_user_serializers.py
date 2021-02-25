@@ -48,8 +48,6 @@ class InvitedTenantUserSerializer(BaseModelSerializer):
   def validate(self, data):
     if self.user.id != data['user_id']:
       raise serializers.ValidationError('Request sent from invalid user.')
-    if self.tenant.id != data['tenant_id']:
-      raise serializers.ValidationError('Request sent across different tenant.')
     models.User.objects.get(id=data['user_id'], email=self.user.email)
 
     invitation_code = models.TenantInvitationCode.objects.get(
