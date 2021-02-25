@@ -80,6 +80,13 @@ class BaseModelSerializer(serializers.ModelSerializer):
   def __init__(
       self, instance=None, data=empty, tenant=None, tenant_user=None, user=None,
       extra_request=None, **kwargs):
+    if extra_request is not None:
+      if isinstance(data, list):
+        for elem in data:
+          elem.update(extra_request)
+      else:
+        data.update(extra_request)
+
     super().__init__(instance=instance, data=data, **kwargs)
     self.tenant = tenant
     self.tenant_user = tenant_user
