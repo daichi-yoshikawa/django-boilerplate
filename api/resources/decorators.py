@@ -20,12 +20,20 @@ def tenant_user_api(wrapped_func):
 
     if 'domain' not in kwargs:
       raise ValidationError('domain is missing in endpoint.')
-    tenant_id = models.Tenant.objects.get(domain=kwargs['domain']).id
+    query = models.Tenant.objects.filter(domain=kwargs['domain'])
+    if not query.exists():
+      raise ValidationError(
+          f'Tenant({kwargs["domain"]}) not found.')
+    tenant_id = query.get().id
 
     request = args[1]
-    tenant_user = models.TenantUser.objects.get(
+    query = models.TenantUser.objects.filter(
         tenant_id=tenant_id, user_id=request.user.id)
-    serializer = serializers.TenantUserSerializer(tenant_user)
+    if not query.exists():
+      raise ValidationError(
+          f'Tenant user(user_id: {request.user.id}, '
+          f'domain:{kwargs["domain"]}) not found.')
+    serializer = serializers.TenantUserSerializer(query.get())
     args += (Box(serializer.data),)
 
     return wrapped_func(*args, **kwargs)

@@ -75,7 +75,7 @@ class TestTenant:
 
   @pytest.mark.parametrize('req, expected', [
     (dict(data=dict(user_id=1, tenant_id=1)), dict(status=200)),
-    (dict(data=dict(user_id=1, tenant_id=2)), dict(status=500)),
+    (dict(data=dict(user_id=1, tenant_id=2)), dict(status=400)),
   ])
   def test_get_tenant(self, client, base_url, bearer_token, req, expected):
     # Preprocess
@@ -101,7 +101,7 @@ class TestTenant:
      dict(status=200)),
     (dict(user_id=1, tenant_id=1, tgt_tenant_id=2, data=[dict(
         tenant_id=2, email=email_from(seed=5))]),
-     dict(status=500)),
+     dict(status=400)),
   ])
   def test_create_tenant_invitation_code(
       self, client, base_url, bearer_token, req, expected, settings):
@@ -114,7 +114,7 @@ class TestTenant:
     req['data'][0]['tenant_user_id'] = get_tenant_user_id(
         tenant_id=req['tenant_id'], user_id=req['user_id'])
     res = client.post(
-        f'{base_url}/tenants/{domain}/invitation_codes/', req['data'],
+        f'{base_url}/tenants/{domain}/invitation-codes/', req['data'],
         bearer_token=bearer_token(email_from(req['user_id'])),
         check_auth_guard=is_ok(expected['status']))
     assert res.status_code == expected['status']
