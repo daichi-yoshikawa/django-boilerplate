@@ -55,9 +55,10 @@ class TenantUserListView(APIView):
 
 class TenantUserView(APIView):
   @tenant_user_api
-  def get(self, request, tenant_user, domain, pk):
+  def get(self, request, tenant_user, domain, tenant_user_id):
     where = Q(tenant_id=tenant_user.tenant.id)
-    where &= Q(id=pk) if pk != 0 else Q(user_id=request.user.id)
+    where &= Q(id=tenant_user_id) if tenant_user_id != 0 else (
+        Q(user_id=request.user.id))
     tenant_user = models.TenantUser.objects.get(where)
     serializer = serializers.TenantUserSerializer(tenant_user)
     return Response(serializer.data, status=status.HTTP_200_OK)
