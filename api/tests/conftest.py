@@ -83,11 +83,7 @@ def setup_users(django_db_blocker, reset_sequence):
     model = models.User
     model.objects.all().delete()
     reset_sequence(model)
-    for seed in range(1, 11, 1):
-      req = dict(data=signup_data(seed))
-      user = model.objects.create(**req['data'])
-      user.set_password(user.password)
-      user.save()
+    call_command('insert_test_users')
 
 @pytest.fixture(scope='class')
 def setup_tenants(django_db_blocker, reset_sequence):
@@ -95,11 +91,7 @@ def setup_tenants(django_db_blocker, reset_sequence):
     model = models.Tenant
     model.objects.all().delete()
     reset_sequence(model)
-    for seed in range(1, 6, 1):
-      req = dict(data=dict(name=tenant_name_from(seed)))
-      tenant = model.objects.create(**req['data'])
-      tenant.set_domain()
-      tenant.save()
+    call_command('insert_test_tenants')
 
 @pytest.fixture(scope='class')
 def setup_tenant_users(django_db_blocker, setup_users, setup_tenants, reset_sequence):
@@ -107,14 +99,4 @@ def setup_tenant_users(django_db_blocker, setup_users, setup_tenants, reset_sequ
     model = models.TenantUser
     model.objects.all().delete()
     reset_sequence(model)
-
-    requests = [
-      dict(data=dict(tenant_id=1, user_id=1)),
-      dict(data=dict(tenant_id=5, user_id=1)),
-      dict(data=dict(tenant_id=2, user_id=2)),
-      dict(data=dict(tenant_id=1, user_id=3)),
-      dict(data=dict(tenant_id=3, user_id=3)),
-    ]
-    for req in requests:
-      tenant_user = model.objects.create(**req['data'])
-      tenant_user.save()
+    call_command('insert_test_tenant_users')

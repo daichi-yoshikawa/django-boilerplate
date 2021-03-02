@@ -19,7 +19,7 @@ def last_name_from(seed, as_dict=False):
   return { 'last_name': ret } if as_dict else ret
 
 def email_from(seed, as_dict=False):
-  ret = f't{str(seed).zfill(3)}@t.com'
+  ret = f'test{str(seed).zfill(3)}@test.com'
   return { 'email': ret } if as_dict else ret
 
 def user_data(seed, overwrite=dict()):

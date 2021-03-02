@@ -16,8 +16,8 @@ from helpers.utils import *
     'django_db_setup', 'setup_users', 'setup_tenants', 'setup_tenant_users')
 class TestTenant:
   @pytest.mark.parametrize('req, expected', [
-    (dict(user_id=1), dict(tenants=[dict(id=1), dict(id=5)], status=200)),
-    (dict(user_id=5), dict(tenants=[], status=200)),
+    (dict(user_id=1), dict(tenants=[dict(id=1), dict(id=2)], status=200)),
+    (dict(user_id=11), dict(tenants=[], status=200)),
   ])
   def test_get_user_tenants(self, client, base_url, bearer_token, req, expected):
     # Execution
@@ -75,7 +75,7 @@ class TestTenant:
 
   @pytest.mark.parametrize('req, expected', [
     (dict(data=dict(user_id=1, tenant_id=1)), dict(status=200)),
-    (dict(data=dict(user_id=1, tenant_id=2)), dict(status=400)),
+    (dict(data=dict(user_id=1, tenant_id=3)), dict(status=400)),
   ])
   def test_get_tenant(self, client, base_url, bearer_token, req, expected):
     # Preprocess
@@ -96,11 +96,11 @@ class TestTenant:
     assert res.data['name'] == tenant_name_from(req['data']['tenant_id'])
 
   @pytest.mark.parametrize('req, expected', [
-    (dict(user_id=1, tenant_id=1, tgt_tenant_id=1,
-          data=[dict(email=email_from(seed=4))]),
+    (dict(user_id=1, tenant_id=1, tgt_tenant_id=1, data=[dict(
+        email=email_from(seed=2))]),
      dict(status=200)),
-    (dict(user_id=1, tenant_id=1, tgt_tenant_id=2,
-          data=[dict(email=email_from(seed=5))]),
+    (dict(user_id=1, tenant_id=1, tgt_tenant_id=2, data=[dict(
+        email=email_from(seed=5))]),
      dict(status=400)),
   ])
   def test_create_tenant_invitation_code(
@@ -135,9 +135,9 @@ class TestTenant:
         settings.TENANT_INVITATION_CODE_LENGTH)
 
   @pytest.mark.parametrize('req, expected', [
-    (dict(user_id=5, tenant_id=1, data=dict(email=email_from(seed=4))),
+    (dict(user_id=3, tenant_id=1, data=dict(email=email_from(seed=2))),
      dict(status=403)),
-    (dict(user_id=4, tenant_id=1, data=dict(email=email_from(seed=4))),
+    (dict(user_id=2, tenant_id=1, data=dict(email=email_from(seed=2))),
      dict(status=200)),
   ])
   def test_retrieve_invited_tenant(
@@ -163,11 +163,11 @@ class TestTenant:
     assert res.data['id'] == req['tenant_id']
 
   @pytest.mark.parametrize('req, expected', [
-    (dict(user_id=4, tenant_id=2, user_id_to_get_invitation_code=4),
+    (dict(user_id=2, tenant_id=3, user_id_to_get_invitation_code=2),
      dict(status=400)),
-    (dict(user_id=5, tenant_id=1, user_id_to_get_invitation_code=4),
+    (dict(user_id=5, tenant_id=1, user_id_to_get_invitation_code=2),
      dict(status=500)),
-    (dict(user_id=4, tenant_id=1, user_id_to_get_invitation_code=4),
+    (dict(user_id=2, tenant_id=1, user_id_to_get_invitation_code=2),
      dict(status=201)),
   ])
   def test_create_tenant_user(self, client, base_url, bearer_token, req, expected):
@@ -206,8 +206,8 @@ class TestTenant:
 
   @pytest.mark.parametrize('req, expected', [
     (dict(user_id=1, tenant_id=1, tgt_tenant_user_id=1), dict(status=200)),
-    (dict(user_id=1, tenant_id=5, tgt_tenant_user_id=1), dict(status=500)),
-    (dict(user_id=1, tenant_id=5, tgt_tenant_user_id=3), dict(status=500)),
+    (dict(user_id=1, tenant_id=5, tgt_tenant_user_id=1), dict(status=400)),
+    (dict(user_id=1, tenant_id=5, tgt_tenant_user_id=3), dict(status=400)),
   ])
   def test_get_tenant_user(self, client, base_url, bearer_token, req, expected):
     # Preprocess
