@@ -165,6 +165,15 @@ If you use development server provided by django, you don't need to run gunicorn
 ### 11. Access to index.html
 Open your favorite browser, and input localhost:8000/entry. You'll see entry page of sample web app now :)
 
+### (Optional) Insert test data
+Make sure that database is running on docker. And then execute the follow.
+```
+$ python manage.py insert_test_data
+OR, if you'd like to drop all tables and re-create them,
+$ python manage.py insert_test_data --reset_db
+```
+The test data is defined in core/management/commands/insert_*.py and core/management/commands/constants.py.
+
 ## Directory Structure
 ### core
 You define/extend models under this directory. Also, migration files are supposed to be contained in this.
