@@ -34,7 +34,9 @@ Major packages are illustrated in the table below.
 ### 0. Use docker-compose
 If you use docker-compose, you just follow step 3, 7 and 9 first. And then launch docker-compose as below.
 ```
-$ docker-compose up -d
+$ docker-compose -p <project-name> up -d
+Eg.
+$ docker-compose -p my_project up -d
 ```
 You can check containers are running correctly.
 ```
@@ -94,12 +96,17 @@ $ cp dot.env.default .env
 ### 4. Launch docker container of postgres
 To launch postgres server for development,
 ```
-$ docker-compose up -d postgres
+$ docker-compose -p <project-name> up -d postgres
+Eg.
+$ docker-compose -p my_project up -d postgres
 ```
 To launch postgres server for test,
 ```
-$ docker-compose -f docker-compose.test.yml up -d postgres
+$ docker-compose -p <another-project-name> -f docker-compose.test.yml up -d postgres
+Eg.
+$ docker-compose -p my_project_test up -d postgres
 ```
+Note: Use different project name for test and others. If you use the same project name, running container may be stopped and new container will be recreated(and it won't be what you want).
 
 ### 4.5 (Optional) Login postgres docker container
 Install postgres client and login.
