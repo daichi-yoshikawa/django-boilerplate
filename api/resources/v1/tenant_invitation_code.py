@@ -23,7 +23,8 @@ class TenantInvitationCodeListView(APIView):
   @transaction.atomic
   def post(self, request, tenant_user, domain):
     serializer = serializers.TenantInvitationCodeSerializer(
-        data=request.data, tenant_user=tenant_user, many=True,
+        data=request.data, tenant_user=tenant_user,
+        many=isinstance(request.data, list),
         extra_request=dict(tenant_id=tenant_user.tenant.id))
     serializer.is_valid(raise_exception=True)
     serializer.save()
