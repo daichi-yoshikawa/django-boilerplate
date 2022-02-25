@@ -1,3 +1,4 @@
+from ipware import get_client_ip
 from rest_framework import status
 from rest_framework.exceptions import ValidationError
 from rest_framework.views import APIView
@@ -12,6 +13,20 @@ from api import serializers
 
 class CustomTokenObtainPairView(TokenObtainPairView):
   serializer_class = serializers.CustomTokenObtainPairSerializer
+
+  def post(self, request, *args, **kwargs):
+    class Request:
+      data = dict()
+
+    ip_address, is_routable = get_client_ip(request)
+
+    request_ = Request()
+    request_.data = {
+      **dict(request.data),
+      'ip_address': ip_address,
+    }
+
+    return super().post(request_, *args, **kwargs)
 
 
 class CustomTokenRefreshView(TokenRefreshView):

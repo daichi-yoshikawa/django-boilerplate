@@ -1,18 +1,5 @@
 version: "3"
 services:
-  django:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    image: django
-    container_name: "django_gunicorn"
-    depends_on:
-      - postgres:
-    volumes:
-      - .:/root/django-app
-      - ../vue-boilerplate/dist:/root/vue-boilerplate/dist
-    network_mode: "host"
-    command: bash -c "python manage.py collectstatic --noinput && python manage.py migrate && gunicorn config.wsgi"
   postgres:
     container_name: $POSTGRES_CONTAINER_NAME
     image: 'postgres:12.4'

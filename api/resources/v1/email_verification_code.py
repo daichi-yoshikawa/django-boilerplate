@@ -1,5 +1,4 @@
 import os
-import urllib.parse
 
 from django.conf import settings
 from django.core.mail import EmailMessage
@@ -29,8 +28,7 @@ class EmailVerificationCodeView(APIView):
     return Response(serializer.data, status=status.HTTP_200_OK)
 
   def send_verification_code(self, email, verification_code):
-    query_params = urllib.parse.urlencode({'email': email})
-    url = self.BASE_URL.rstrip('/') + f'/{verification_code}?{query_params}'
+    url = self.BASE_URL.rstrip('/') + f'/{verification_code}'
     subject = 'Please confirm your email address'
     body = (f'Thank you for signining up {settings.APP_NAME}.\n\n'
             f'Please take a second to finish your email verification '
@@ -40,3 +38,13 @@ class EmailVerificationCodeView(APIView):
             f'If this was a mistake, the account will not be created.')
     email = EmailMessage(subject=subject, body=body, to=[email])
     email.send()
+
+
+class VerifiedEmailView(APIView):
+  permission_classes = (AllowAny,)
+
+  def post(self, request):
+    serializer = serializers.VerifiedEmailSerializer(data=request.data)
+    serializer.is_valid(raise_exception=True)
+
+    return Response(serializer.data, status=status.HTTP_200_OK)

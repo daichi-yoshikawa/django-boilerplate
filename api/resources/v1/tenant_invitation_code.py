@@ -6,20 +6,39 @@ from django.conf import settings
 from django.core.mail import send_mass_mail
 from django.db import transaction
 from rest_framework import status
+from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
+from rest_framework.settings import api_settings
 from rest_framework.views import APIView
 
 from api import serializers
-from api.resources.decorators import tenant_user_api
+from api.resources.decorators import tenant_admin_api, tenant_user_api
 from core import models
 
 
 logger = logging.getLogger(__name__)
 
-class TenantInvitationCodeListView(APIView):
+class TenantInvitationCodeListView(
+    APIView, api_settings.DEFAULT_PAGINATION_CLASS):
   BASE_URL = os.path.join(settings.APP_DOMAIN, 'auth/invite/')
 
-  @tenant_user_api
+  @tenant_admin_api
+  def get(self, request, tenant_user, domain):
+    query = models.TenantInvitationCode.objects.filter(
+        tenant_id=tenant_user.tenant.id)
+
+    search = request.query_params.get('search')
+    if (search is not None) and (len(search.strip(' ')) > 0):
+      query = self.filter_by_search_text(search, query)
+
+    page = self.paginate_queryset(query, request)
+    serializer = serializers.TenantInvitationCodeSerializer(page, many=True)
+
+    ret = dict(
+        results=serializer.data, count=self.page.paginator.count)
+    return Response(ret, status=status.HTTP_200_OK)
+
+  @tenant_admin_api
   @transaction.atomic
   def post(self, request, tenant_user, domain):
     serializer = serializers.TenantInvitationCodeSerializer(
@@ -48,8 +67,7 @@ class TenantInvitationCodeListView(APIView):
     send_mass_mail(mass_messages, fail_silently=False)
 
   def get_email_message(self, tenant, sender, email, code):
-    query_params = urllib.parse.urlencode({ 'email': email })
-    url = self.BASE_URL.rstrip('/') + f'/{code}?{query_params}'
+    url = self.BASE_URL.rstrip('/') + f'/{code}'
     subject = (f'{sender.user.first_name} {sender.user.last_name} '
                f'has invited you to join the workspace in '
                f'{settings.APP_NAME}')
@@ -76,17 +94,27 @@ class TenantInvitationCodeListView(APIView):
     return filtered_emails, filtered_codes
 
 
+class TenantInvitationCodeView(APIView):
+  @tenant_admin_api
+  def delete(self, request, tenant_user, domain, invitation_code_id):
+    obj = models.TenantInvitationCode.objects.get(
+        pk=invitation_code_id, tenant_id=tenant_user.tenant.id)
+    query = models.TenantInvitationCode.objects.filter(
+        tenant_id=tenant_user.tenant.id, email=obj.email)
+
+    serializer = serializers.TenantInvitationCodeSerializer(
+        query.all(), many=True)
+    data = serializer.data
+    query.all().delete()
+    return Response(data, status.HTTP_200_OK)
+
+
 class InvitedTenantView(APIView):
+  permission_classes = (AllowAny,)
+
   def post(self, request):
     serializer = serializers.InvitedTenantSerializer(
         data=request.data, user=request.user)
     serializer.is_valid(raise_exception=True)
 
-    tenant_invitation_code = models.TenantInvitationCode.objects.get(
-        invitation_code=serializer.data['invitation_code'],
-        email=serializer.data['email'])
-    tenant_id = tenant_invitation_code.tenant.id
-
-    tenant = models.Tenant.objects.get(pk=tenant_id)
-    serializer = serializers.TenantSerializer(tenant)
     return Response(serializer.data, status=status.HTTP_200_OK)

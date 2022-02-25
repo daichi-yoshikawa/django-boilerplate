@@ -8,7 +8,7 @@ from rest_framework.views import APIView
 
 from api import serializers
 from api.common import constants
-from api.resources.decorators import tenant_user_api
+from api.resources.decorators import tenant_admin_api, tenant_user_api
 from core import models
 
 
@@ -31,7 +31,9 @@ class TenantListView(APIView):
         data=data, user=request.user, tenant=tenant,
         extra_request=dict(tenant_id=tenant.id))
     serializer.is_valid(raise_exception=True)
-    serializer.save()
+    tenant_user = serializer.save()
+    tenant_user.role_type = constants.TENANT_USER_ROLE_TYPE.ADMIN.value
+    tenant_user.save()
 
     return Response(ret, status=status.HTTP_200_OK)
 
@@ -41,4 +43,14 @@ class TenantView(APIView):
   def get(self, request, tenant_user, domain):
     tenant = models.Tenant.objects.get(domain=domain)
     serializer = serializers.TenantSerializer(tenant)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+  @tenant_admin_api
+  def put(self, request, tenant_user, domain):
+    tenant = models.Tenant.objects.get(pk=tenant_user.tenant.id, domain=domain)
+    serializer = serializers.TenantSerializer(
+      tenant, data=request.data, tenant_user=tenant_user, partial=True)
+    serializer.is_valid(raise_exception=True)
+    serializer.save()
+
     return Response(serializer.data, status=status.HTTP_200_OK)

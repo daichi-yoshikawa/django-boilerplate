@@ -34,6 +34,7 @@ class TenantInvitationCodeListSerializer(serializers.ListSerializer):
 class TenantInvitationCodeSerializer(BaseModelSerializer):
   tenant = TenantSerializer(required=False, read_only=True)
   tenant_user = TenantUserSerializer(required=False, read_only=True)
+  invited_at = serializers.DateTimeField(required=False, read_only=True)
 
   tenant_id = serializers.IntegerField(write_only=True)
   tenant_user_id = serializers.IntegerField(write_only=True)
@@ -64,20 +65,22 @@ class TenantInvitationCodeSerializer(BaseModelSerializer):
 
 
 class InvitedTenantSerializer(BaseModelSerializer):
-  invitation_code = serializers.CharField()
+  invitation_code = serializers.CharField(
+      max_length=settings.TENANT_INVITATION_CODE_LENGTH)
+  tenant = TenantSerializer(required=False, read_only=True)
 
   class Meta(BaseModelSerializer.Meta):
     model = models.TenantInvitationCode
-    read_only_fields = ('tenant', 'tenant_user', 'valid_until',) + BaseModelSerializer.Meta.read_only_fields
+    read_only_fields = (('tenant', 'tenant_user', 'valid_until',) +
+                        BaseModelSerializer.Meta.read_only_fields)
 
   def validate(self, data):
-    if self.user.email != data['email']:
-      raise exceptions.OwnershipError()
+    if len(data['invitation_code']) != settings.TENANT_INVITATION_CODE_LENGTH:
+      raise serializers.ValidationError('Invalid tenant invitation code.')
 
     query = models.TenantInvitationCode.objects.filter(
-        email=data['email'], invitation_code=data['invitation_code'])
+        invitation_code=data['invitation_code'])
     if not query.exists():
-      raise serializers.ValidationError(
-          f'Valid invitation code for {data["email"]} not found.')
+      raise serializers.ValidationError('Invalid tenant invitation code.')
 
     return data

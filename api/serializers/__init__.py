@@ -1,5 +1,6 @@
 from .email_serializers import EmailVerificationCodeSerializer
 from .email_serializers import EmailVerificationSerializer
+from .failed_login_attempt_serializers import FailedLoginAttemptSerializer
 from .password_reset_code_serializers import PasswordResetCodeSerializer
 from .password_reset_code_serializers import PasswordResetSerializer
 from .tenant_invitation_code_serializers import TenantInvitationCodeSerializer

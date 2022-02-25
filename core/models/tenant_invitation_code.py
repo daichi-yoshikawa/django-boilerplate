@@ -18,6 +18,7 @@ class TenantInvitationCode(BaseTenantModel):
       max_length=200, unique=False, null=False, blank=False)
   invitation_code = models.CharField(
       max_length=200, unique=True, null=False, blank=False)
+  invited_at = models.DateTimeField(null=False, blank=False, auto_now_add=True)
   valid_until = models.DateTimeField(unique=False, null=False, blank=False)
 
   def set_invitation_code(self):

@@ -23,9 +23,10 @@ class TenantUser(BaseTenantModel):
   user = models.ForeignKey(
       'User', unique=False, null=False, blank=False,
       on_delete=models.CASCADE)
-  role_type = models.IntegerField(unique=False, null=False, blank=False, default=0)
-  description = models.CharField(
-      max_length=1000, unique=False, null=False, blank=True, default='')
+  role_type = models.IntegerField(
+      unique=False, null=False, blank=True,
+      default=constants.TENANT_USER_ROLE_TYPE.GENERAL.value)
+  joined_at = models.DateTimeField(null=False, blank=False, auto_now_add=True)
 
   objects = models.Manager()
   tenant_admins = TenantAdminManager()

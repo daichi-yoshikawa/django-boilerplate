@@ -58,3 +58,36 @@ class InvitedTenantUserSerializer(BaseModelSerializer):
       raise exceptions.TenantInvitationCodeExpired()
 
     return data
+
+
+class TenantUserRoleTypeSerializer(BaseModelSerializer):
+  tenant = TenantSerializer(required=False, read_only=True)
+  user = UserSerializer(required=False, read_only=True)
+
+  tenant_user_id = serializers.IntegerField()
+  role_type = serializers.IntegerField()
+
+  class Meta(BaseModelSerializer.Meta):
+    model = models.TenantUser
+
+  def validate(self, data):
+    admin_role_type = constants.TENANT_USER_ROLE_TYPE.ADMIN.value
+    if self.tenant_user.role_type != admin_role_type:
+      raise serializers.ValidationError('General user can not edit role type.')
+
+    if self.tenant_user.id == data['tenant_user_id']:
+      raise serializers.ValidationError('Can\'t edit self role type.')
+
+    if data['role_type'] == constants.TENANT_USER_ROLE_TYPE.GENERAL.value:
+      query = models.TenantUser.objects\
+          .filter(
+            tenant_id=self.tenant_user.tenant.id,
+            role_type=constants.TENANT_USER_ROLE_TYPE.ADMIN.value)\
+          .exclude(
+            pk=data['tenant_user_id'])
+      if query.count() == 0:
+        raise serializers.ValidationError(
+            'If the tenant user is assigned to general user, '\
+            'no admin user is in the tenant.')
+
+    return data

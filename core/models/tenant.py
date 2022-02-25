@@ -36,5 +36,4 @@ class Tenant(BaseModel):
         length=settings.TENANT_DOMAIN_LENGTH)
 
   def __str__(self):
-    return (f'({self.id}){self.name}, '
-            f'{self.domain[:10]}')
+    return f'{self.id}){self.name}, {self.domain[:10]}...'

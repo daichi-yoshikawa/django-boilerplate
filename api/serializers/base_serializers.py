@@ -5,6 +5,23 @@ from api.common import constants
 from core import models
 
 
+class BaseSerializer(serializers.Serializer):
+  def __init__(
+      self, instance=None, data=empty, tenant=None, tenant_user=None, user=None,
+      extra_request=None, **kwargs):
+    if extra_request is not None:
+      if isinstance(data, list):
+        for elem in data:
+          elem.update(extra_request)
+      else:
+        data.update(extra_request)
+
+    super().__init__(instance=instance, data=data, **kwargs)
+    self.tenant = tenant
+    self.tenant_user = tenant_user
+    self.user = user
+
+
 class BaseModelSerializer(serializers.ModelSerializer):
   """
   How to create derived class
@@ -157,3 +174,14 @@ class BaseModelSerializer(serializers.ModelSerializer):
         data.pop(field)
 
     return data
+
+
+class DefaultListSerializer(serializers.ListSerializer):
+  def validate(self, data):
+    if len(data) > 20:
+      raise exceptions.RequestSizeError('Request list size must be <= 20.')
+    return data
+
+
+class StringListField(serializers.ListField):
+  child = serializers.CharField(max_length=100)

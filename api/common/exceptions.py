@@ -16,6 +16,11 @@ class EmailVerificationCodeExpired(APIException):
     super().__init__(detail=detail, code=code)
 
 
+class LoginAttemptLimitError(APIException):
+  def __init__(self, detail='Too many login attempt.', code=None):
+    super().__init__(detail=detail, code=code)
+
+
 class OwnershipError(APIException):
   def __init__(self, detail='Request from wrong user.', code=None):
     super().__init__(detail=detail, code=code)

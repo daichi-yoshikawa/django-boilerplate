@@ -19,11 +19,11 @@ APP_DOMAIN = env.str('APP_DOMAIN')
 SECRET_KEY = env.str('DJANGO_SECRET_KEY')
 DEBUG = env.bool('DJANGO_DEBUG', default=False)
 
-ALLOWED_HOSTS = ['*']
-CORS_ORIGIN_ALLOW_ALL = True
-CORS_ORIGIN_WHITELIST = (
-  'http://loclahost:8000',
-)
+ALLOWED_HOSTS = env.tuple('ALLOWED_HOSTS', default=['localhost', '0.0.0.0'])
+CORS_ORIGIN_ALLOW_ALL = env.bool('CORS_ORIGIN_ALLOW_ALL', default=False)
+CORS_ORIGIN_WHITELIST = env.tuple(
+  'CORS_ORIGIN_WHITELIST',
+  default=('https://localhost:8000', 'https://0.0.0.0:8000',))
 
 ROOT_URLCONF = 'config.urls'
 WSGI_APPLICATION = 'config.wsgi.application'
@@ -86,6 +86,13 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 """
+Cookie HttpOnly
+"""
+LANGUAGE_COOKIE_HTTPONLY = True
+SESSION_COOKIE_HTTPONLY = True
+CSRF_COOKIE_HTTPONLY = True
+
+"""
 Reference
 =========
 https://github.com/jacobian/dj-database-url
@@ -124,18 +131,18 @@ LOGGING = {
       'class': 'logging.FileHandler',
       'level': 'INFO',
       'formatter': 'default',
-      'filename': 'log/application.log',
+      'filename': env.str('LOGGER_FILE_PATH', default='/var/log/application.log'),
     },
   },
   'loggers': {
     '': {
-      'handlers': ['console', 'file'],
-      'level': 'INFO',
+      'handlers': env.list('LOGGER_HANDLERS', default=['file']),
+      'level': env.str('LOGGER_LEVEL', default='INFO'),
       'propagate': False,
     },
     'django': {
-      'handlers': ['console', 'file'],
-      'level': 'INFO',
+      'handlers': env.list('LOGGER_HANDLERS', default=['file']),
+      'level': env.str('LOGGER_LEVEL', default='INFO'),
       'propagate': False,
     },
   },
@@ -154,10 +161,12 @@ REST_FRAMEWORK = {
     'rest_framework.throttling.UserRateThrottle',
   ],
   'DEFAULT_THROTTLE_RATES': {
-    'anon': '100/h',
-    'user': '1000/h',
+    'anon': env.str('DRF_THROTTLE_RATES_ANONYMOUS'),
+    'user': env.str('DRF_THROTTLE_RATES_USER'),
   },
   'EXCEPTION_HANDLER': 'api.resources.exception_handler.custom_exception_handler',
+  'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+  'PAGE_SIZE': 10,
 }
 
 """ Settings for Auth (django.contrib.auth) """
@@ -177,6 +186,8 @@ AUTH_PASSWORD_VALIDATORS = [
   },
 ]
 
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
+
 """ Settings for rest_framework_simplejwt """
 SIMPLE_JWT = {
   'ACCESS_TOKEN_LIFETIME': timedelta(
@@ -191,7 +202,6 @@ SIMPLE_JWT = {
 }
 
 """ Settings for email """
-ENABLE_EMAIL_VERIFICATION = env.bool('ENABLE_EMAIL_VERIFICATION')
 EMAIL_VERIFICATION_CODE_LENGTH = env.int('EMAIL_VERIFICATION_CODE_LENGTH')
 EMAIL_VERIFICATION_CODE_LIFETIME_MINS = env.int('EMAIL_VERIFICATION_CODE_LIFETIME_MINS')
 
@@ -214,5 +224,7 @@ TENANT_INVITATION_CODE_LIFETIME_MINS = (
 TENANT_INVITATION_CODE_REQUEST_MAX_SIZE = (
     env.int('TENANT_INVITATION_CODE_REQUEST_MAX_SIZE'))
 
+FAILED_LOGIN_ATTEMPT_MAX_COUNT = env.int('FAILED_LOGIN_ATTEMPT_MAX_COUNT')
+LOGIN_LOCK_PERIOD_MINS = env.int('LOGIN_LOCK_PERIOD_MINS')
 PASSWORD_RESET_CODE_LENGTH = env.int('PASSWORD_RESET_CODE_LENGTH')
 PASSWORD_RESET_CODE_LIFETIME_MINS = env.int('PASSWORD_RESET_CODE_LIFETIME_MINS')

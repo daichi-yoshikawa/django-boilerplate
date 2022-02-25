@@ -3,7 +3,7 @@ from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
 from api.common import exceptions, utils
-from api.serializers.base_serializers import BaseModelSerializer
+from api.serializers.base_serializers import BaseModelSerializer, BaseSerializer
 from core import models
 
 
@@ -60,3 +60,20 @@ class PasswordResetSerializer(BaseModelSerializer):
       raise exceptions.PasswordResetCodeExpired()
 
     return data
+
+
+class PasswordResetEmailSerializer(BaseSerializer):
+  reset_code = serializers.CharField(
+      max_length=settings.PASSWORD_RESET_CODE_LENGTH, write_only=True)
+  email = serializers.CharField(max_length=200, required=False)
+
+  def validate(self, data):
+    if len(data['reset_code']) != settings.PASSWORD_RESET_CODE_LENGTH:
+      raise serializers.ValidationError('Invalid password reset code.')
+
+    query = models.PasswordResetCode.objects.filter(
+        reset_code=data['reset_code'])
+    if query.count() != 1:
+      raise serializers.ValidationError('Invalid password reset code.')
+
+    return query.get()
